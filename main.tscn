@@ -1,0 +1,87 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://spaceship_01.png" type="Texture" id=1]
+[ext_resource path="res://spaceship_02.png" type="Texture" id=2]
+[ext_resource path="res://spaceship_03.png" type="Texture" id=3]
+[ext_resource path="res://spaceship_04.png" type="Texture" id=4]
+[ext_resource path="res://spaceship_00.png" type="Texture" id=5]
+[ext_resource path="res://spaceship_05.png" type="Texture" id=6]
+[ext_resource path="res://spaceship_06.png" type="Texture" id=7]
+[ext_resource path="res://spaceship_07.png" type="Texture" id=8]
+[ext_resource path="res://spaceship_08.png" type="Texture" id=9]
+[ext_resource path="res://Player.gd" type="Script" id=10]
+
+[sub_resource type="PhysicsMaterial" id=3]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 44.7423
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "spin",
+"speed": 15.0
+} ]
+
+[sub_resource type="Animation" id=6]
+resource_name = "sway"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 5.0, 0.0 ]
+}
+
+[sub_resource type="PhysicsMaterial" id=5]
+bounce = 0.2
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 552.498, 41.8887 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Area2D" type="Area2D" parent="."]
+gravity = 0.0
+linear_damp = 27.289
+
+[node name="Player" type="RigidBody2D" parent="Area2D"]
+position = Vector2( 127.177, 309.06 )
+rotation = 0.00579104
+physics_material_override = SubResource( 3 )
+gravity_scale = 0.0
+can_sleep = false
+linear_damp = 1.5
+script = ExtResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/Player"]
+shape = SubResource( 2 )
+
+[node name="UFO" type="AnimatedSprite" parent="Area2D/Player"]
+frames = SubResource( 1 )
+animation = "spin"
+frame = 4
+playing = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Area2D/Player"]
+anims/sway = SubResource( 6 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="Area2D"]
+mode = 1
+physics_material_override = SubResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D/RigidBody2D"]
+position = Vector2( 518.077, -36.0218 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D/RigidBody2D"]
+position = Vector2( 497.948, 638.856 )
+shape = SubResource( 4 )
